@@ -14,19 +14,19 @@ static int _timeout;
 
 @property (nonatomic, strong) HandlerBlock handlerBlock;
 
-@property (nonatomic, strong) HandlerBlock finish;
+@property (nonatomic, strong) FinishBolck finish;
 
 
 @end
 
 @implementation BYTimer
 
-+ (void)timerWithTimeout:(int)timeout handlerBlock:(HandlerBlock)handlerBlock finish:(HandlerBlock)finish {
++ (void)timerWithTimeout:(int)timeout handlerBlock:(HandlerBlock)handlerBlock finish:(FinishBolck)finish {
     [[[self alloc] init] createTimerWithTimeout:timeout handlerBlock:handlerBlock finish:finish];
 }
 
 
-- (void)createTimerWithTimeout:(int)timeout handlerBlock:(HandlerBlock)handlerBlock finish:(HandlerBlock)finish {
+- (void)createTimerWithTimeout:(int)timeout handlerBlock:(HandlerBlock)handlerBlock finish:(FinishBolck)finish {
     
     _timeout = timeout;
     self.handlerBlock = handlerBlock;
@@ -50,14 +50,12 @@ static int _timeout;
     
     dispatch_source_set_event_handler(timer, ^{
         
-        if (_timeout >= 0) {
-            
-            NSLog(@"倒计时：%d", _timeout);
+        if (_timeout > 0) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 if (_handlerBlock) {
-                    _handlerBlock();
+                    _handlerBlock(_timeout);
                 }
             });
             
@@ -75,7 +73,7 @@ static int _timeout;
             });
         }
         
-        _timeout--;
+        _timeout --;
         
     });
     
