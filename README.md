@@ -2,7 +2,7 @@
 
 This is a the GCD timer Ruin a per second
 
-##Usage
+## Usage
 
 ```
     [BYTimer timerWithTimeout:10 handlerBlock:^(int timeout) {
